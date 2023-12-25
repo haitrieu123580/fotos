@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    "target": "ES2017",
     "module": "commonjs",
     "moduleResolution": "node",
-    "baseUrl": "./",
-    "rootDir": "./",
-    "outDir": "./dist",
+    "baseUrl": "src",
+    "outDir": "dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,
@@ -13,6 +12,6 @@
     "strict": true,
   },
   "include": [
-    "./**/*.ts"
+    "src/**/*.ts"
   ],
 }
