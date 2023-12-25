@@ -66,4 +66,4 @@ User.init({
 });
 
 sequelize.sync();
-export = User;
+export default User;

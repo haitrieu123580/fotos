@@ -32,4 +32,4 @@ Picture.init({
 });
 
 sequelize.sync();
-export = Picture;
+export default Picture;

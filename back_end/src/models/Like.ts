@@ -44,4 +44,4 @@ Like.init({
 });
 
 sequelize.sync();
-export = Like;
+export default Like;

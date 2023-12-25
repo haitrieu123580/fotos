@@ -13,14 +13,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 DBConnection();
-// DBConnection.connect()
-//     .then(obj => {
-//         console.log('Connected to the database');
-//         obj.done(); 
-//     })
-//     .catch(error => {
-//         console.error('Error connecting to the database:', error);
-//     });
 
 app.use('/api/auth', authRoutes)
 
