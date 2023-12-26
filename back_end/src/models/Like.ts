@@ -1,5 +1,5 @@
 import { Sequelize, DataTypes, Model, literal } from "sequelize";
-const sequelize = new Sequelize();
+import sequelize from '../database/ConnectDB'
 
 class Like extends Model { }
 
