@@ -2,9 +2,7 @@ import dotenv from 'dotenv'
 // import { IMain, IDatabase } from 'pg-promise';
 // import { IConnectionParameters } from 'pg-promise/typescript/pg-subset';
 import { Sequelize } from 'sequelize';
-import User from '../models/User'
-import Like from '../models/Like'
-import Picture from '../models/Picture'
+
 
 dotenv.config();
 
@@ -19,4 +17,4 @@ const sequelize = new Sequelize(
         database: process.env.DB_DATABASE,
     }
 );
-export = sequelize  ;
+export = sequelize;
