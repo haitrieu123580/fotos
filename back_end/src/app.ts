@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import express, { Express, Request, Response, Application } from "express";
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -19,5 +20,5 @@ app.use('/api/auth', authRoutes)
 app.use('/api/user', userRouter)
 
 app.listen(process.env.PORT || 8000, () => {
-    console.log(`server is running on ${process.env.PORT || 8000}`)
+    console.log(`server is running on http://localhost:${process.env.PORT || 8000}`)
 })

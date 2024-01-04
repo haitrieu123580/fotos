@@ -1,11 +1,12 @@
 import AuthServiceInterface from "services/auth/AuthServiceInterface";
+import { Request, Response } from "express";
 class AuthController {
     private authService: AuthServiceInterface;
     constructor() {
 
     }
-    login = async (req: Request, res: Response) => {
-
+    sign_in = async (req: Request) => {
+        return { Data: "OK" }
     }
 
 }

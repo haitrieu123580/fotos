@@ -1,5 +1,5 @@
 import { Request } from "express";
 interface AuthServiceInterface {
-    login: (req: Request) => Promise<null>;
+    sign_in: (req: Request) => Promise<any>;
 }
 export = AuthServiceInterface;
