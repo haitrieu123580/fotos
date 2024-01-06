@@ -1,5 +1,5 @@
 import { Request } from "express";
 interface AuthRepositoryInterface {
-    sign_in: (data: any) => Promise<any>;
+    getUser: (username: String) => Promise<any>;
 }
 export = AuthRepositoryInterface;

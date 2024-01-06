@@ -2,7 +2,6 @@ import 'reflect-metadata';
 import express, { Express, Request, Response, Application } from "express";
 import dotenv from 'dotenv';
 import cors from 'cors';
-import sequelize from './database/ConnectDB'
 // import cookieParser from 'cookie-parser';
 import authRoutes from './routers/auth/index';
 import userRouter from './routers/user/index';
@@ -14,7 +13,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// DBConnection();
 
 app.use('/api/auth', authRoutes)
 app.use('/api/user', userRouter)

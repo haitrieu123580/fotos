@@ -1,16 +1,14 @@
 import { Request, Response, Router } from "express";
-import asyncHandler from 'express-async-handler';
 import AuthController from "../../controllers/auth/AuthController";
+import isValidRequest from "../../middleware/ValidRequest";
+import SignUpRequest from "../../requests/auth/SignUpRequest";
+import SignInRequest from "../../requests/auth/SignInRequest";
 
 const router = Router();
 const authController = new AuthController();
 
-router.get('', (req: Request, res: Response) => {
-    res.status(200).json("hello world");
-});
+router.post('/sign-in', [isValidRequest(SignInRequest)], authController.sign_in);
 
-router.post('/sign-in', asyncHandler(async (req: Request, res: Response) => {
-    await authController.sign_in(req);
-}));
+router.post('/sign-up', [isValidRequest(SignUpRequest)], authController.sign_up);
 
 export default router;

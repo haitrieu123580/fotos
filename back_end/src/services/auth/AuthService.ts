@@ -2,23 +2,34 @@ import { Container, Service, Inject } from "typedi";
 import { Request } from "express";
 import AuthServiceInterface from "./AuthServiceInterface";
 import AuthRepositoryInterface from "repositories/auth/AuthRepoInterface";
+import AuthRepository from "../../repositories/auth/AuthRepo"
+import SignInResponse from "../../resources/auth/SignInResponse";
+
 @Service()
 class AuthService implements AuthServiceInterface {
 
-    private authService: AuthRepositoryInterface;
+    private authRepo: AuthRepositoryInterface;
     constructor() {
-        // this.authService = l
+        this.authRepo = Container.get(AuthRepository)
     }
 
-    public sign_in = async (req: Request): Promise<any> => {
+    public sign_in = async (req: Request): Promise<SignInResponse> => {
         try {
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            return {};
+            const userData = await this.authRepo.getUser(req.body.username);
+            return new SignInResponse("access_token", "refresh_token");
         } catch (error: any) {
-            // Handle errors
+            // Xử lý lỗi
             throw error;
         }
     };
+
+    public sign_up = async (req: Request): Promise<any> => {
+        try {
+
+        } catch (error) {
+
+        }
+    }
 }
 
 export default AuthService;
