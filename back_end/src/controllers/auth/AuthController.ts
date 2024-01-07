@@ -19,11 +19,12 @@ class AuthController {
     }
     sign_up = async (req: Request, res: Response) => {
         try {
-            return res.json({ data: "oke" })
+            const result = await this.authService.sign_up(req);
+            return res.json({ data: result.message })
         } catch (error) {
 
         }
     }
 
 }
-export = AuthController;
+export default AuthController;
