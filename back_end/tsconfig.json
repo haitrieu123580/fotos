@@ -1,17 +1,22 @@
 {
-  "compilerOptions": {
-    "target": "ES2017",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "baseUrl": "src",
-    "outDir": "dist",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": true,
-    "skipLibCheck": true,
-    "strict": true,
-  },
-  "include": [
-    "src/**/*.ts"
-  ],
+   "compilerOptions": {
+      "target": "ES2017",
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "baseUrl": "src",
+      "outDir": "dist",
+      "forceConsistentCasingInFileNames": true,
+      "noImplicitAny": true,
+      "skipLibCheck": true,
+      "strict": true,
+      "strictPropertyInitialization": false,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "allowJs": true,
+      "esModuleInterop": true
+   },
+   "include": [
+      "src/**/*.ts",
+      "types/**/*.d.ts"
+   ],
 }
