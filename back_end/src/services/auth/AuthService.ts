@@ -1,12 +1,15 @@
 import { Container, Service, Inject } from "typedi";
 import { Request } from "express";
+import dotenv from 'dotenv'
 import AuthServiceInterface from "./AuthServiceInterface";
-import AuthRepositoryInterface from "repositories/auth/AuthRepoInterface";
+import AuthRepositoryInterface from "../../repositories/auth/AuthRepoInterface";
 import AuthRepository from "../../repositories/auth/AuthRepo"
-import UserRepoInterface from "repositories/user/UserRepoInterface";
+import UserRepoInterface from "../../repositories/user/UserRepoInterface";
 import UserRepo from "../../repositories/user/UseRepo";
 import SignInResponse from "../../resources/auth/SignInResponse";
-
+import { hasingPassword, comparePassword } from "../../helper/HashingPassword";
+import jwt from 'jsonwebtoken';
+dotenv.config();
 @Service()
 class AuthService implements AuthServiceInterface {
 
@@ -17,10 +20,29 @@ class AuthService implements AuthServiceInterface {
         this.userRepo = Container.get(UserRepo);
     }
 
-    public sign_in = async (req: Request): Promise<SignInResponse> => {
+    public sign_in = async (req: Request): Promise<any> => {
         try {
-            const userData = await this.authRepo.getUser(req.body.username);
-            return new SignInResponse("access_token", "refresh_token");
+            const userData = await this.userRepo.getUserByUsername(req.body.username);
+            if (userData) {
+                if (comparePassword(req.body.password, userData.password)) {
+                    const access_token = jwt.sign({
+                        id: userData.id,
+                        username: userData.username
+                    }, String(process.env.JWT_SECRET), {
+                        expiresIn: "1d",
+                        algorithm: "HS256"
+                    });
+                    const refresh_token = jwt.sign({
+                        id: userData.id,
+                        username: userData.username
+                    }, String(process.env.JWT_SECRET), {
+                        expiresIn: "1m",
+                        algorithm: "HS256"
+                    });
+                    return { access_token, refresh_token, exprires_access_token: "1d" }
+                }
+            }
+            return null
         } catch (error: any) {
             // Xử lý lỗi
             throw error;
@@ -31,14 +53,24 @@ class AuthService implements AuthServiceInterface {
         try {
             const isExistedEmail = await this.userRepo.isExistedEmail(req.body.email)
             if (isExistedEmail) {
+                return { message: "Email Existed!" }
+            }
+            else {
                 const newUser = await this.userRepo.createUser(req.body)
                 return { message: "Created" }
             }
-            else {
-                return { message: "Email Existed!" }
-            }
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    public me = async (data: any): Promise<any> => {
+        try {
+            const id = data.user.id;
+            const user = await this.userRepo.me(String(id))
+            return user;
+        } catch (error) {
+
         }
     }
 }

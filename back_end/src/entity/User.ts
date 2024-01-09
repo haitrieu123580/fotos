@@ -19,16 +19,16 @@ export class User {
     @Column({
         nullable: true
     })
-    salt: string
-
-    @Column({
-        nullable: true
-    })
     access_token: string
 
     @Column({
         nullable: true
     })
     refresh_token: string
+
+    @Column({
+        nullable: true
+    })
+    avatar: string
 
 }

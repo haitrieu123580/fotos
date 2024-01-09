@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 
 const isValidRequest = (targetRequest: any) => {
     return async (request: Request, response: Response, next: NextFunction) => {
-        console.log(targetRequest)
         try {
             if (validateRequest(request.body, targetRequest)) {
                 next();

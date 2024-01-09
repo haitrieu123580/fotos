@@ -8,12 +8,15 @@ import { hasingPassword, comparePassword } from "../../helper/HashingPassword";
 class UserRepo implements UserRepoInterface {
     private userDataSource = AppDataSource.getRepository(User)
 
-    getUser = async (username: String): Promise<any> => {
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        return {
-            user: "abc",
-            password: "hashing"
-        };
+    getUserByUsername = async (username: string): Promise<any> => {
+        const result = await this.userDataSource.findOne(
+            {
+                where: {
+                    username: username
+                }
+            }
+        )
+        return result;
     };
 
     isExistedEmail = async (email: string): Promise<boolean> => {
@@ -22,7 +25,7 @@ class UserRepo implements UserRepoInterface {
                 email: email
             }
         })
-        if (user) {
+        if (user.length) {
             return true;
         }
         return false;
@@ -32,11 +35,15 @@ class UserRepo implements UserRepoInterface {
         const user = new User();
         user.email = data.email;
         user.username = data.username;
-        const { salt, password } = hasingPassword(String(data.password))
+        const { password } = hasingPassword(String(data.password))
         user.password = password;
-        user.salt = salt;
         await this.userDataSource.save(user)
         return user;
+    }
+
+    me = async (id: string): Promise<User | null> => {
+        const result = await this.userDataSource.findOneBy({ id: id })
+        return result;
     }
 }
 
