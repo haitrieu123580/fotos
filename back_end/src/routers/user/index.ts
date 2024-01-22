@@ -7,5 +7,4 @@ const uploadAvatarController = new UploadAvatarController();
 const router = Router();
 
 router.post('/upload-avatar', [verifyToken], uploadAvatarController.uploadAvatar)
-
 export = router
