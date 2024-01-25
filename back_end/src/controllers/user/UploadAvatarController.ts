@@ -19,7 +19,6 @@ class UploadAvatarController {
         try {
             const file = req.file;
             const result = await this.s3Service.uploadFile(file);
-            console.log(file)
             return res.status(200).json({ imagePath: result.Key })
         } catch (error) {
             console.log(error)
