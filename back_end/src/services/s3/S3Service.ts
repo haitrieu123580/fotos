@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import { S3 } from "aws-sdk";
-import { Container, Service } from 'typedi';
+import { Service } from 'typedi';
 import fs from 'fs'
 dotenv.config();
 
@@ -12,17 +12,22 @@ class S3Service {
         secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
     })
 
-    //upload
     public uploadFile = async (file: any): Promise<any> => {
         const fileStream = fs.createReadStream(file.path);
         return this.s3.upload({
             Bucket: String(process.env.AWS_S3_BUCKGET_NAME),
             Body: fileStream,
             Key: file.filename
-        })
+        }).promise();
     }
-    //get
+    public getFileStream = async (fileKey: string) => {
+        return this.s3.getObject({
+            Key: fileKey,
+            Bucket: String(process.env.AWS_S3_BUCKGET_NAME),
 
+        }).createReadStream();
+    }
     //delete
+
 }
 export default S3Service;
