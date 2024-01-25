@@ -8,3 +8,4 @@ temp/
 .docker/
 yarn.lock
 uploads/
+yarn.lock
