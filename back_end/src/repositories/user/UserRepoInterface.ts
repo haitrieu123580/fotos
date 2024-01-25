@@ -9,5 +9,8 @@ interface UserRepoInterface {
     createUser: (data: any) => Promise<User>;
 
     me: (id: string) => Promise<User | null>;
+
+    updateAvatar: (userId: string, imagePath: string) => Promise<boolean | null>;
+
 }
 export default UserRepoInterface;

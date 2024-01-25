@@ -16,15 +16,15 @@ export class User {
     @Column()
     password: string
 
-    @Column({
-        nullable: true
-    })
-    access_token: string
+    // @Column({
+    //     nullable: true
+    // })
+    // access_token: string
 
-    @Column({
-        nullable: true
-    })
-    refresh_token: string
+    // @Column({
+    //     nullable: true
+    // })
+    // refresh_token: string
 
     @Column({
         nullable: true

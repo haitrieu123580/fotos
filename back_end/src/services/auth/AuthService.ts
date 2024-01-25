@@ -13,10 +13,8 @@ dotenv.config();
 @Service()
 class AuthService implements AuthServiceInterface {
 
-    private authRepo: AuthRepositoryInterface;
     private userRepo: UserRepoInterface;
     constructor() {
-        this.authRepo = Container.get(AuthRepository);
         this.userRepo = Container.get(UserRepo);
     }
 
@@ -29,14 +27,14 @@ class AuthService implements AuthServiceInterface {
                         id: userData.id,
                         username: userData.username
                     }, String(process.env.JWT_SECRET), {
-                        expiresIn: "1d",
+                        expiresIn: String(process.env.TOKEN_EXPIRE_TIME),
                         algorithm: "HS256"
                     });
                     const refresh_token = jwt.sign({
                         id: userData.id,
                         username: userData.username
                     }, String(process.env.JWT_SECRET), {
-                        expiresIn: "1m",
+                        expiresIn: String(process.env.REFRESH_TOKEN_EXPIRE_TIME),
                         algorithm: "HS256"
                     });
                     return { access_token, refresh_token, exprires_access_token: "1d" }
@@ -44,7 +42,7 @@ class AuthService implements AuthServiceInterface {
             }
             return null
         } catch (error: any) {
-            // Xử lý lỗi
+            console.log(error)
             throw error;
         }
     };

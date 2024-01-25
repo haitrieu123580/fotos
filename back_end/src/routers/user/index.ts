@@ -1,5 +1,5 @@
 import { Router } from "express";
-// import verifyToken from "../../middleware/VerifyToken";
+import verifyToken from "../../middleware/VerifyToken";
 import UploadAvatarController from '../../controllers/user/UploadAvatarController';
 import multer from "multer";
 const upload = multer(
@@ -9,7 +9,7 @@ const upload = multer(
 const uploadAvatarController = new UploadAvatarController();
 const router = Router();
 
-router.post('/upload-avatar', [upload.single("avatar")], uploadAvatarController.uploadAvatar)
+router.post('/upload-avatar', [verifyToken, upload.single("avatar")], uploadAvatarController.uploadAvatar)
 
 router.get('/images/:key', uploadAvatarController.getAvatar)
 

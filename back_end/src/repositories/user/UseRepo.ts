@@ -45,6 +45,19 @@ class UserRepo implements UserRepoInterface {
         const result = await this.userDataSource.findOneBy({ id: id })
         return result;
     }
+
+    updateAvatar = async (userId: string, imagePath: string): Promise<boolean> => {
+        const user = await this.userDataSource.findOneBy({ id: userId });
+        if (user) {
+            user.avatar = imagePath;
+            await this.userDataSource.save(user)
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 }
 
 export default UserRepo;
