@@ -4,6 +4,7 @@ import UserService from "../../services/user/UserService";
 import UserServiceInterface from "../../services/user/UserServiceInterface";
 import S3Service from "../../services/s3/S3Service";
 import multer from "multer";
+import getUser from "../../helper/GetUserRequest";
 const upload = multer();
 class UploadAvatarController {
 
@@ -19,6 +20,9 @@ class UploadAvatarController {
         try {
             const file = req.file;
             const result = await this.s3Service.uploadFile(file);
+            // **? should get user by doing this way
+            const user = await getUser(req)
+            await this.userService.upload_avatar(user, String(result.Key))
             return res.status(200).json({ imagePath: result.Key })
         } catch (error) {
             console.log(error)

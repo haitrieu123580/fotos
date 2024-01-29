@@ -12,6 +12,9 @@ router.post('/sign-in', [isValidRequest(SignInRequest)], authController.sign_in)
 
 router.post('/sign-up', [isValidRequest(SignUpRequest)], authController.sign_up);
 
-router.get('/me', [verifyToken], authController.me)
+router.get('/me', [verifyToken], authController.me);
+
+router.post('/get-token', authController.get_token);
+
 
 export default router;
