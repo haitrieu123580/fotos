@@ -58,6 +58,28 @@ class UserRepo implements UserRepoInterface {
         }
     }
 
+    isExistedToken = async (token: string): Promise<boolean> => {
+        const user = await this.userDataSource.findOneBy({
+            token: token
+        })
+        if (user) {
+            return true;
+        }
+        return false;
+    }
+
+    storeToken = async (id: string, token: string): Promise<boolean> => {
+        const user = await this.userDataSource.findOneBy({
+            id: id
+        })
+        if (user) {
+            user.token = token;
+            await this.userDataSource.save(user);
+            return true
+        }
+        return false;
+    }
+
 }
 
 export default UserRepo;

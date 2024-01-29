@@ -35,6 +35,14 @@ class AuthController {
 
         }
     }
+    get_token = async (req: Request, res: Response) => {
+        try {
+            const data = await this.authService.get_access_token_by_refresh_token(req);
+            return res.json(data);
+        } catch (error) {
+
+        }
+    }
 
 }
 export default AuthController;

@@ -21,10 +21,10 @@ export class User {
     // })
     // access_token: string
 
-    // @Column({
-    //     nullable: true
-    // })
-    // refresh_token: string
+    @Column({
+        nullable: true
+    })
+    token: string
 
     @Column({
         nullable: true
