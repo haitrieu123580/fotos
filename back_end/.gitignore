@@ -7,5 +7,3 @@ temp/
 .env
 .docker/
 yarn.lock
-uploads/
-yarn.lock
