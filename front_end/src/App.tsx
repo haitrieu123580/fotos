@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import './i18n';
 
 function App() {
-  const { isLogin, token } = useSelector((state: any) => state.Auth);
+  const { token } = useSelector((state: any) => state.Auth);
   return (
 
     <ThemeProvider>

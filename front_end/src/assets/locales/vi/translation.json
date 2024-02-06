@@ -9,6 +9,7 @@
         "passwordPlaceholder": "Nhập mật khẩu",
         "submit": "Đăng nhập",
         "success": "Đăng nhập thành công",
-        "error": "Đăng nhập thất bại"
+        "error": "Đăng nhập thất bại",
+        "email":"Email"
     }
 }

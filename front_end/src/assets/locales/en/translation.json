@@ -9,6 +9,7 @@
         "passwordPlaceholder": "Enter your password",
         "submit": "Login",
         "success": "Logged in successfully",
-        "error": "Falied to login"
+        "error": "Falied to login",
+        "email":"Email"
     }
 }
