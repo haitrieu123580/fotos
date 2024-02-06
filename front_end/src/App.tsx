@@ -1,20 +1,37 @@
 import "./App.css";
-import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { publicRoutes } from "@/routes/MainRoutes";
 import { protectedRoutes } from "@/routes/ProtectRoutes";
-import {  Suspense } from 'react';
-import initStore from '@/redux/store';
-const store = initStore()
+import { Fragment, Suspense } from 'react';
+import { ThemeProvider } from "@/components/themes/ThemeProvider";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from "react-redux";
+import './i18n';
 
 function App() {
+  const { isLogin, token } = useSelector((state: any) => state.Auth);
   return (
-    <Provider store={store}>
-    <div className='App'>
-      <Router>
+
+    <ThemeProvider>
+      <div className='App'>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={true}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          limit={1}
+        />
+        <Router>
           <Suspense fallback={<div>Loading...</div>}>
             <Routes>
-              { publicRoutes.map((route:any, index:number) => {
+              {publicRoutes.map((route: any, index: number) => {
                 const Page = route.component;
                 const Layout = route.layout;
                 return (
@@ -29,30 +46,30 @@ function App() {
                   />
                 );
               })}
-            {protectedRoutes.map((route:any, index:number) => {
-              const Page = route.component;
-              const Layout = route.layout;
-              return (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    0 ? (
-                      <Layout>
-                        <Page/>
-                      </Layout>
-                    ) : (
-                      <Navigate to="/login" replace={true} />
-                    )
-                  }
-                />
-              );
-            })}
+              {protectedRoutes.map((route: any, index: number) => {
+                const Page = route.component;
+                const Layout = route.layout;
+                return (
+                  <Route
+                    key={index}
+                    path={route.path}
+                    element={
+                      token !== "" ? (
+                        <Layout>
+                          <Page />
+                        </Layout>
+                      ) : (
+                        <Navigate to="/login" replace={true} />
+                      )
+                    }
+                  />
+                );
+              })}
             </Routes>
           </Suspense>
-      </Router >
-    </div>
-    </Provider >
+        </Router >
+      </div>
+    </ThemeProvider>
   );
 }
 

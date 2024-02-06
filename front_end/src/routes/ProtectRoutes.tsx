@@ -4,7 +4,7 @@ const Profile = lazy(() => import('@/pages/profile/Profile'))
 const protectedRoutes = [
     {
         path: '/profile',
-        component: <Profile/>,
+        component: Profile,
         layout: MainLayout,
     },
 ]
