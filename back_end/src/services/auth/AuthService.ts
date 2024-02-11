@@ -2,11 +2,8 @@ import { Container, Service, Inject } from "typedi";
 import { Request } from "express";
 import dotenv from 'dotenv'
 import AuthServiceInterface from "./AuthServiceInterface";
-// import AuthRepositoryInterface from "../../repositories/auth/AuthRepoInterface";
-// import AuthRepository from "../../repositories/auth/AuthRepo"
 import UserRepoInterface from "../../repositories/user/UserRepoInterface";
 import UserRepo from "../../repositories/user/UseRepo";
-// import SignInResponse from "../../resources/auth/SignInResponse";
 import { comparePassword } from "../../helper/HashingPassword";
 import { genAccessToken, genRefreshToken, verifyToken } from "../../helper/JwtHelper";
 import jwt from 'jsonwebtoken';
