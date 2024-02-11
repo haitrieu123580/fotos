@@ -76,7 +76,7 @@ const Login = () => {
               <FormItem>
                 <FormLabel className="float-start mb-6">{t("login.password")}</FormLabel>
                 <FormControl>
-                  <Input placeholder={t("login.passwordPlaceholder")} {...field} className="dark:border-rose-200" />
+                  <Input type="password" placeholder={t("login.passwordPlaceholder")} {...field} className="dark:border-rose-200" />
                 </FormControl>
                 <FormMessage className="text-start text-xs dark:text-rose-600" />
               </FormItem>

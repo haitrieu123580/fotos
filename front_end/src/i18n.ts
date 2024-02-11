@@ -5,7 +5,7 @@ import translationEN from '@/assets/locales/en/translation.json'
 import translationVI from '@/assets/locales/vi/translation.json'
 
 const i18n = i18next.createInstance()
-const fallbackLng = ['vi']
+const fallbackLng = 'vi'
 const resources = {
     en: {
         translation: translationEN,
@@ -20,10 +20,12 @@ i18n.use(LanguageDetector)
     .use(initReactI18next)
     .init({
         resources,
-        fallbackLng,
+        lng: fallbackLng,
+        fallbackLng: fallbackLng,
         interpolation: {
             escapeValue: false,
         },
+        debug: true,
     })
 
 export default i18n
