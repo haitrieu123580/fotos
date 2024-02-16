@@ -2,7 +2,7 @@ import UserRepoInterface from "./UserRepoInterface";
 import { User } from '../../entity/User';
 import { AppDataSource } from "../../data-source"
 import { Service } from "typedi";
-import SignUpRequest from "../../requests/auth/SignUpRequest";
+import SignUpRequest from "../../dto/SignUpRequest";
 import { hasingPassword, comparePassword } from "../../helper/HashingPassword";
 @Service()
 class UserRepo implements UserRepoInterface {

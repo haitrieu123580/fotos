@@ -29,15 +29,20 @@
       "nodemon": "^3.0.2",
       "pg": "^8.4.0",
       "reflect-metadata": "^0.1.13",
+      "swagger-jsdoc": "^6.2.8",
+      "swagger-ui-express": "^5.0.0",
       "typedi": "^0.10.0",
       "typeorm": "0.3.19",
-      "winston": "^3.11.0"
+      "winston": "^3.11.0",
+      "yaml": "^2.3.4"
    },
    "main": "app.js",
    "devDependencies": {
       "@types/cors": "^2.8.17",
       "@types/express": "^4.17.21",
       "@types/node": "^16.11.10",
+      "@types/swagger-jsdoc": "^6.0.4",
+      "@types/swagger-ui-express": "^4.1.6",
       "sequelize-cli": "^6.6.2",
       "ts-node": "10.9.1",
       "ts-node-dev": "^2.0.0",

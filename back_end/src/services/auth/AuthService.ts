@@ -1,22 +1,23 @@
 import { Container, Service, Inject } from "typedi";
-import { Request } from "express";
+import { Request, Response } from "express";
 import dotenv from 'dotenv'
 import AuthServiceInterface from "./AuthServiceInterface";
 import UserRepoInterface from "../../repositories/user/UserRepoInterface";
 import UserRepo from "../../repositories/user/UseRepo";
 import { comparePassword } from "../../helper/HashingPassword";
 import { genAccessToken, genRefreshToken, verifyToken } from "../../helper/JwtHelper";
-import jwt from 'jsonwebtoken';
+import { SuccessResponse, FailureMsgResponse, InternalErrorResponse } from "../../core/ApiResponse";
+import { UserProfile } from "../../dto/UserProfile";
+// import { ApiResponse } from "../../core/ApiResponse";
 dotenv.config();
 @Service()
 class AuthService implements AuthServiceInterface {
-
     private userRepo: UserRepoInterface;
     constructor() {
         this.userRepo = Container.get(UserRepo);
     }
 
-    public sign_in = async (req: Request): Promise<any> => {
+    public sign_in = async (req: Request, res: Response): Promise<any> => {
         try {
             const userData = await this.userRepo.getUserByUsername(req.body.username);
             if (userData) {
@@ -24,31 +25,35 @@ class AuthService implements AuthServiceInterface {
                     const access_token = genAccessToken(userData.id, userData.username);
                     const refresh_token = genRefreshToken(userData.id, userData.username);
                     const result = await this.userRepo.storeToken(userData.id, refresh_token);
-                    return { access_token, refresh_token, exprires_access_token: "1d" }
+                    // return { access_token, refresh_token, exprires_access_token: "1d" }
+                    return new SuccessResponse('Login Success', {
+                        access_token, refresh_token, exprires_access_token: "1d"
+                    }).send(res);
                 }
             }
-            return null
+            return new FailureMsgResponse('Invalid Credentials').send(res);
         } catch (error: any) {
-            throw error;
+            return new InternalErrorResponse('Internal Server Error').send(res);
         }
     };
 
-    public sign_up = async (req: Request): Promise<any> => {
+    public sign_up = async (req: Request, res: Response): Promise<any> => {
         try {
             const isExistedEmail = await this.userRepo.isExistedEmail(req.body.email)
             if (isExistedEmail) {
-                return { message: "Email Existed!" }
+                return new FailureMsgResponse('Email Existed!').send(res);
             }
             else {
                 const newUser = await this.userRepo.createUser(req.body)
-                return { message: "Created" }
+                return new SuccessResponse('User Created', newUser).send(res);
             }
         } catch (error) {
             console.log(error)
+            return new InternalErrorResponse('Internal Server Error').send(res);
         }
     }
 
-    public get_access_token_by_refresh_token = async (req: Request): Promise<any> => {
+    public get_access_token_by_refresh_token = async (req: Request, res: Response): Promise<any> => {
         try {
             const refresh_token = req.body.refresh_token;
             if (!refresh_token) return { message: "Refresh token not found!" }
@@ -62,26 +67,32 @@ class AuthService implements AuthServiceInterface {
                 const access_token = genAccessToken(user.id, user.username)
 
                 const new_refresh_token = genRefreshToken(user.id, user.username)
-
-                return { access_token, refresh_token: new_refresh_token, expires_access_token: "1d" };
+                return new SuccessResponse('Token Refreshed', {
+                    access_token,
+                    refresh_token: new_refresh_token,
+                    expires_access_token: "1d"
+                })
+                    .send(res);
             } else {
-                return {
-                    message: "Token not existed"
-                };
+                return new FailureMsgResponse('Token not existed').send(res);
             }
         } catch (error) {
-            // Handle errors appropriately
+            return new InternalErrorResponse('Internal Server Error').send(res);
         }
     }
 
 
-    public me = async (data: any): Promise<any> => {
+    public me = async (data: any, res: Response): Promise<any> => {
         try {
             const id = data.user.id;
             const user = await this.userRepo.me(String(id))
-            return user;
+            const userProfile = new UserProfile(user);
+            if (user) {
+                return new SuccessResponse('User Profile', userProfile).send(res);
+            }
+            return new FailureMsgResponse('User not found').send(res);
         } catch (error) {
-
+            return new InternalErrorResponse('Internal Server Error').send(res);
         }
     }
 }
