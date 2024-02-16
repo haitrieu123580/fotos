@@ -9,7 +9,10 @@ import { AppDataSource } from "./data-source"
 import swaggerUI from 'swagger-ui-express';
 import YAML from 'yaml';
 import fs from 'fs';
+import path from 'path';
 dotenv.config();
+
+const app: Application = express();
 
 // Database connection
 AppDataSource.initialize().then(async () => {
@@ -18,17 +21,17 @@ AppDataSource.initialize().then(async () => {
 
 
 // Swagger
-const file = fs.readFileSync(__dirname + '/docs/swagger.yaml', 'utf8');
-const swaggerDocument = YAML.parse(file);
+try {
+    const file = fs.readFileSync(path.resolve(__dirname, '../docs/swagger.yaml'), 'utf8')
+    const swaggerDocument = YAML.parse(file);
+    app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+} catch (error) {
 
-const app: Application = express();
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+}
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-
 app.use('/api/auth', authRoutes)
 app.use('/api/user', userRouter)
 
