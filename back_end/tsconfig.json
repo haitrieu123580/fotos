@@ -3,7 +3,7 @@
       "target": "ES2017",
       "module": "commonjs",
       "moduleResolution": "node",
-      "baseUrl": "src",
+      // "baseUrl": "src",
       "outDir": "dist",
       "forceConsistentCasingInFileNames": true,
       "noImplicitAny": true,
@@ -13,7 +13,13 @@
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
       "allowJs": true,
-      "esModuleInterop": true
+      "esModuleInterop": true,
+      "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
    },
    "include": [
       "src/**/*.ts",

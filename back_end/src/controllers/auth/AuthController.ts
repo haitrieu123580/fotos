@@ -2,46 +2,24 @@ import AuthServiceInterface from "../../services/auth/AuthServiceInterface";
 import { Request, Response } from "express";
 import Container from 'typedi';
 import AuthService from "../../services/auth/AuthService";
+// import { BadRequestError, AuthFailureError } from "../../core/ApiError";
+import { SuccessResponse, AuthFailureResponse, InternalErrorResponse } from "../../core/ApiResponse";
 class AuthController {
     private authService: AuthServiceInterface;
     constructor() {
         this.authService = Container.get(AuthService)
     }
     sign_in = async (req: Request, res: Response): Promise<any> => {
-        try {
-            const data = await this.authService.sign_in(req);
-            if (data) {
-                return res.status(200).json(data)
-            }
-            return res.status(500).json({ message: "Error" })
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
+        await this.authService.sign_in(req, res);
     }
     sign_up = async (req: Request, res: Response) => {
-        try {
-            const result = await this.authService.sign_up(req);
-            return res.json({ data: result.message })
-        } catch (error) {
-
-        }
+        await this.authService.sign_up(req, res);
     }
     me = async (req: Request, res: Response) => {
-        try {
-            const user = await this.authService.me(req)
-            return res.json({ Data: user })
-        } catch (error) {
-
-        }
+        await this.authService.me(req, res);
     }
     get_token = async (req: Request, res: Response) => {
-        try {
-            const data = await this.authService.get_access_token_by_refresh_token(req);
-            return res.json(data);
-        } catch (error) {
-
-        }
+        await this.authService.get_access_token_by_refresh_token(req, res);
     }
 
 }
