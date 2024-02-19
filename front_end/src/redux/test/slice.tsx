@@ -13,7 +13,6 @@ const testSlice = createSlice({
       state.isTest = false
     },
     _testActionSuccess: (state, { payload }) => {
-      console.log(payload.message)
       state.isTest = true;
       state.message = String(payload.message);
     }
