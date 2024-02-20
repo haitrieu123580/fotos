@@ -7,6 +7,7 @@ import { z } from "zod"
 import { useDispatch } from "react-redux"
 import ShowToastify from "@/utils/ShowToastify"
 import { useNavigate } from "react-router-dom"
+import GoogleIcon from "@/components/common/icons/GoogleIcon"
 import {
   Form,
   FormControl,
@@ -15,6 +16,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+const BACKEND_URL = import.meta.env.VITE_API_URL;
+
 const Login = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -50,12 +53,16 @@ const Login = () => {
     })
   }
 
+  const googleAuth = () => {
+    window.open(`${BACKEND_URL}/passport/google`, "_self")
+  }
+
   return (
-    <div>
+    <div className='sm:w-full lg:w-2/4  m-auto  border-2 p-3 rounded-md dark:border-rose-400'>
       <h1 className="text-lg mb-3">{t("login.title")}</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 sm:w-full lg:w-2/4  m-auto border-2 p-3 rounded-md dark:border-rose-400">
+          className="space-y-8 my-2">
           <FormField
             control={form.control}
             name="username"
@@ -84,10 +91,19 @@ const Login = () => {
           />
 
           <Button type="submit" variant={"outline"}
-            className="dark:bg-red-400 bg-slate-400 m-auto">
+            className="dark:bg-red-400 bg-slate-400 my-2">
             Submit</Button>
         </form>
       </Form>
+      <div className="w-3/4 h-0.5 m-auto border-b-2 border-b-slate-500 dark:border-b-rose-300 border-dashed"></div>
+      <Button
+        type="button"
+        variant={"outline"}
+        onClick={() => { googleAuth() }}
+        className="dark:bg-red-400 bg-white my-2 text-rose-500 dark:text-white">
+        <GoogleIcon /> <span className="ml-2">Sign in with Google</span>
+      </Button>
+
     </div>
   )
 }
