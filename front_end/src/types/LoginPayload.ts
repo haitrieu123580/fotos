@@ -3,6 +3,6 @@ export interface LoginPayload {
         username: string;
         password: string;
     };
-    onSuccess?: () => void;
-    onError?: () => void;
+    onSuccess?: (message?: string) => void;
+    onError?: (message?: string) => void;
 }

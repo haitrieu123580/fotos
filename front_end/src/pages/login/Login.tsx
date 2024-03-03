@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux"
 import ShowToastify from "@/utils/ShowToastify"
 import { useNavigate } from "react-router-dom"
 import GoogleIcon from "@/components/common/icons/GoogleIcon"
+import { loginAction } from "@/redux/auth/slice"
 import {
   Form,
   FormControl,
@@ -16,6 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { routerPaths } from "@/routes/path"
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 const Login = () => {
@@ -39,22 +41,22 @@ const Login = () => {
     },
   })
 
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    dispatch({
-      type: "LOGIN",
-      payload: {
-        data: values,
-        onSuccess: () => {
-          ShowToastify.showSuccessToast(t("login.success"))
-          navigate("/profile")
-        },
-        onError: () => { ShowToastify.showErrorToast(t("login.error")) }
+    dispatch(loginAction({
+      data: values,
+      onSuccess: () => {
+        ShowToastify.showSuccessToast(t("login.success"))
+        navigate(routerPaths.PROFILE);
       },
-    })
+      onError: () => {
+        ShowToastify.showErrorToast(t("login.error"))
+      }
+    }));
   }
 
   const googleAuth = () => {
-    window.open(`${BACKEND_URL}/passport/google`, "_self")
+    window.open(`${BACKEND_URL}/passport/google`, "_self");
   }
 
   return (

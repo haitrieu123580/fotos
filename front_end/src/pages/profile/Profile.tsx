@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form"
 import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslation } from "react-i18next"
-import { useDispatch } from "react-redux"
-import AuthAction from "@/redux/auth/action"
+import { useDispatch, useSelector } from "react-redux"
+import { getProfileAction } from "@/redux/auth/slice"
 import {
   Card,
   CardContent,
@@ -22,25 +22,32 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { useEffect } from "react"
-import { ProfileResponse } from "@/types/ProfileTypes"
+// import { ProfileResponse } from "@/types/ProfileTypes"
 const Profile = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { profile } = useSelector((state: any) => state.Auth);
   const getProfile = () => {
-    dispatch({
-      type: AuthAction.GET_PROFILE,
-      payload: {
-        onSuccess: (data: any) => {
-          form.setValue('username', data.username);
-          form.setValue('email', data.email);
-        },
-        onError: () => { }
+    dispatch(getProfileAction({
+      type: "getProfile",
+      onSuccess: () => {
       },
-    })
+      onError: (message: any) => {
+        console.log("onError is calling: ", message)
+        // navigate(routerPaths.LOGIN);
+      }
+    }));
   }
   useEffect(() => {
-    getProfile();
-  }, [])
+    console.log("profile.jsx: ", profile)
+    // if (profile.username) {
+    // }
+    if (profile?.username) {
+      form.setValue('username', profile?.username);
+      form.setValue('email', profile?.email);
+      // getProfile();
+    }
+  }, [profile])
   const formSchema = z.object({
     username: z.string().min(2, {
       message: t("login.invalidUsername"),

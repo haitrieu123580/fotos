@@ -56,7 +56,9 @@ class AuthService implements AuthServiceInterface {
     public get_access_token_by_refresh_token = async (req: Request, res: Response): Promise<any> => {
         try {
             const refresh_token = req.body.refresh_token;
-            if (!refresh_token) return { message: "Refresh token not found!" }
+            if (!refresh_token) {
+                return new FailureMsgResponse('Refresh Token is required').send(res);
+            }
 
             // Check validity with an existing token
             const isExistingToken = await this.userRepo.isExistedToken(String(refresh_token));
@@ -70,13 +72,14 @@ class AuthService implements AuthServiceInterface {
                 return new SuccessResponse('Token Refreshed', {
                     access_token,
                     refresh_token: new_refresh_token,
-                    expires_access_token: "1d"
+                    expires_access_token: String(process.env.TOKEN_EXPIRE_TIME)
                 })
                     .send(res);
             } else {
                 return new FailureMsgResponse('Token not existed').send(res);
             }
         } catch (error) {
+            console.log(error)
             return new InternalErrorResponse('Internal Server Error').send(res);
         }
     }
