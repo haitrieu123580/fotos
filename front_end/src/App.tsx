@@ -1,4 +1,3 @@
-import "./App.css";
 import './i18n';
 import 'react-toastify/dist/ReactToastify.css';
 import { ThemeProvider } from "@/components/themes/ThemeProvider";
