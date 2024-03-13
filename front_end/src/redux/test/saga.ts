@@ -1,13 +1,12 @@
-import { all, call, fork, put, takeEvery } from "@redux-saga/core/effects";
-import actions from "./action";
-import { _test } from "./slice";
+import { all, call, fork, put, takeEvery, takeLatest } from "@redux-saga/core/effects";
+import { _testAction, _testActionSuccess } from "./slice";
 import { TestAPI } from "@/api/TestApi";
 function* watchTest() {
-  yield takeEvery(actions.TEST, function* (payload): Generator<any, void, any> {
+  yield takeLatest(_testAction.type, function* (payload): Generator<any, void, any> {
     try {
       const res = yield call(TestAPI, payload);
       yield put(
-        _test({
+        _testActionSuccess({
           message: res.message
         })
       );
@@ -20,6 +19,5 @@ function* watchTest() {
 export default function* TestSaga() {
   yield all([
     fork(watchTest),
-
   ]);
 }

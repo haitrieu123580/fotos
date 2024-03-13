@@ -1,5 +1,20 @@
 import { toast } from 'react-toastify';
 export default class ShowToastify {
+    constructor(type: string, message: string) {
+        switch (type) {
+            case "success":
+                ShowToastify.showSuccessToast(message)
+                break;
+            case "error":
+                ShowToastify.showErrorToast(message)
+                break;
+            case "warning":
+                ShowToastify.showWarningToast(message)
+                break;
+            default:
+                break;
+        }
+    }
     static showSuccessToast(message: any) {
         toast(message, {
             type: 'success',

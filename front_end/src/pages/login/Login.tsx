@@ -7,6 +7,8 @@ import { z } from "zod"
 import { useDispatch } from "react-redux"
 import ShowToastify from "@/utils/ShowToastify"
 import { useNavigate } from "react-router-dom"
+import GoogleIcon from "@/components/common/icons/GoogleIcon"
+import { loginAction } from "@/redux/auth/slice"
 import {
   Form,
   FormControl,
@@ -15,6 +17,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { routerPaths } from "@/routes/path"
+import { FormInput } from "@/components/common/custom_input/CustomInput"
+import { Separator } from "@/components/ui/separator"
+const BACKEND_URL = import.meta.env.VITE_API_URL;
+
 const Login = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -36,27 +43,31 @@ const Login = () => {
     },
   })
 
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    dispatch({
-      type: "LOGIN",
-      payload: {
-        data: values,
-        onSuccess: () => {
-          ShowToastify.showSuccessToast(t("login.success"))
-          navigate("/profile")
-        },
-        onError: () => { ShowToastify.showErrorToast(t("login.error")) }
+    dispatch(loginAction({
+      data: values,
+      onSuccess: () => {
+        ShowToastify.showSuccessToast(t("login.success"))
+        navigate(routerPaths.PROFILE);
       },
-    })
+      onError: () => {
+        ShowToastify.showErrorToast(t("login.error"))
+      }
+    }));
+  }
+
+  const googleAuth = () => {
+    window.open(`${BACKEND_URL}/passport/google`, "_self");
   }
 
   return (
-    <div>
-      <h1 className="text-lg mb-3">{t("login.title")}</h1>
+    <div
+      className='sm:w-full lg:w-2/4 m-auto border-2 p-3 rounded-md dark:border-rose-400'>
+      <h1 className="text-lg mb-3 w-full text-center">{t("login.title")}</h1>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 sm:w-full lg:w-2/4  m-auto border-2 p-3 rounded-md dark:border-rose-400">
-          <FormField
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          {/* <FormField
             control={form.control}
             name="username"
             render={({ field }) => (
@@ -81,13 +92,44 @@ const Login = () => {
                 <FormMessage className="text-start text-xs dark:text-rose-600" />
               </FormItem>
             )}
+          /> */}
+          <FormInput
+            control={form.control}
+            type="text"
+            label={t("login.username")}
+            fieldName="username"
+            placeholder={t("login.usernamePlaceholder")}
+          // className="float-start mb-6"
+          // classNameInput="dark:border-rose-200"
           />
-
-          <Button type="submit" variant={"outline"}
-            className="dark:bg-red-400 bg-slate-400 m-auto">
-            Submit</Button>
+          <FormInput
+            control={form.control}
+            type="password"
+            label={t("login.password")}
+            fieldName="password"
+            placeholder={t("login.usernamePlaceholder")}
+          // className="float-start mb-6"
+          // classNameInput="dark:border-rose-200"
+          />
+          <div className="flex justify-center my-2">
+            <Button type="submit" variant={"outline"}
+              className="dark:bg-red-400 bg-slate-400 ">
+              Submit
+            </Button>
+          </div>
         </form>
       </Form>
+      <Separator className="bg-rose-500" />
+      <div className="flex justify-center my-2">
+        <Button
+          type="button"
+          variant={"outline"}
+          onClick={() => { googleAuth() }}
+          className="m-auto dark:bg-red-400 bg-white my-2 text-rose-500 dark:text-white">
+          <GoogleIcon /> <span className="ml-2">Sign in with Google</span>
+        </Button>
+      </div>
+
     </div>
   )
 }
