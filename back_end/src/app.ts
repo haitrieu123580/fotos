@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import express, { Application } from "express";
+import express, { Application } from "express";
 import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieSession from 'cookie-session';
@@ -22,6 +23,11 @@ const app: Application = express();
 AppDataSource.initialize().then(async () => {
     console.log("Database connection established successfully.");
 }).catch(error => console.log(error))
+
+
+// Swagger
+const file = fs.readFileSync(__dirname + '/docs/swagger.yaml', 'utf8');
+const swaggerDocument = YAML.parse(file);
 
 
 // Swagger
