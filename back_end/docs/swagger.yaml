@@ -43,6 +43,74 @@ paths:
                 $ref: '#/components/schemas/SuccessAuthentication'
         '400':
           description: Invalid username/password supplied
+  /api/auth/sign-up:
+    post:
+      tags:
+        - user
+      summary: Register new account
+      description: ''
+      operationId: registerUser
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpBody'
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+             application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessAuthentication'
+        '400':
+          description: Invalid username/password supplied
+  /api/user/upload-avatar:
+    post:
+      tags:
+        - user
+      summary: Upload user avatar
+      description: ''
+      operationId: uploadAvatar
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UploadAvatarBody'
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+             application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessAuthentication'
+        '400':
+          description: Invalid username/password supplied
 components:
   schemas:
     SignInBody:
@@ -52,6 +120,32 @@ components:
           type: string
         password:
           type: string
+      xml:
+        name: tag
+    SignUpBody:
+      type: object
+      properties:
+        email:
+          type: string
+          example: example@email.com
+        username:
+          type: string
+          example: username
+        password:
+          type: string
+          example: password
+        confirm_password:
+          type: string
+          example: password
+      xml:
+        name: tag
+    UploadAvatarBody:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+      
       xml:
         name: tag
     SuccessAuthentication:
